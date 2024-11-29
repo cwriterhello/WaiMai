@@ -1,17 +1,29 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -52,6 +64,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //3、返回实体对象
         return employee;
+    }
+
+    @Override
+    public void add(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        //对象属性拷贝
+        BeanUtils.copyProperties(employeeDTO,employee);
+        //设置员工状态,1是正常，2是锁定
+        employee.setStatus(StatusConstant.ENABLE);
+        //设置员工密码,默认值123456
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+        //员工创建时间
+        employee.setCreateTime(LocalDateTime.now());
+        //员工修改时间
+        employee.setUpdateTime(LocalDateTime.now());
+        //员工创建者
+        employee.setCreateUser(10L);
+        //员工修改者
+        employee.setUpdateUser(10L);
+        employeeMapper.add(employee);
+    }
+
+    @Override
+    @ApiOperation("员工分页查询")
+    public PageResult selectByPage(EmployeePageQueryDTO epq) {
+        //PageHelper实现分页查询
+        PageHelper.startPage(epq.getPage(),epq.getPageSize());
+        List<Employee> empList = employeeMapper.selectByPage(epq);
+        Page<Employee> page = (Page<Employee>) empList;
+        return new PageResult(page.getTotal(),page.getResult());
     }
 
 }
