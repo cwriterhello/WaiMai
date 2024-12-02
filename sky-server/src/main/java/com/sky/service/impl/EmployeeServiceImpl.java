@@ -20,7 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -75,14 +74,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
         //设置员工密码,默认值123456
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        //员工创建时间
-        employee.setCreateTime(LocalDateTime.now());
-        //员工修改时间
-        employee.setUpdateTime(LocalDateTime.now());
-        //员工创建者
-        employee.setCreateUser(10L);
-        //员工修改者
-        employee.setUpdateUser(10L);
+//        //员工创建时间
+//        employee.setCreateTime(LocalDateTime.now());
+//        //员工修改时间
+//        employee.setUpdateTime(LocalDateTime.now());
+//        //员工创建者
+//        employee.setCreateUser(10L);
+//        //员工修改者
+//        employee.setUpdateUser(10L);
         employeeMapper.add(employee);
     }
 
@@ -95,5 +94,33 @@ public class EmployeeServiceImpl implements EmployeeService {
         Page<Employee> page = (Page<Employee>) empList;
         return new PageResult(page.getTotal(),page.getResult());
     }
+
+    @Override
+    @ApiOperation("启用禁用员工登录")
+    public void update(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                        .status(status)
+                                .id(id)
+                                        .build();
+        employeeMapper.update(employee);
+    }
+
+    @Override
+    @ApiOperation("修改员工信息")
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+//        employee.setUpdateUser(10L);
+//        employee.setUpdateTime(LocalDateTime.now());
+        employeeMapper.update(employee);
+    }
+
+    @Override
+    @ApiOperation("根据id查询员工信息")
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        return employee;
+    }
+
 
 }
