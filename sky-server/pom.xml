@@ -106,7 +106,6 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
-
         <!-- poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -126,5 +125,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

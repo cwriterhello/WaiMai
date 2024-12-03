@@ -28,17 +28,31 @@ public class DishController {
         return Result.success();
     }
 
-//    @ApiOperation("根据id查询菜品")
-//    @GetMapping("/{id}")
-//    public Result<Dish> selectById(@PathVariable Long id){
-//        Dish dish = dishService.selectById(id);
-//        return Result.success(dish);
-//    }
-//
-//    @ApiOperation("根据分类id查询菜品")
-//    @GetMapping("/list")
-//    public Result<List<Dish>> selectByCategoryId(@RequestParam String categoryId){
-//       List <Dish> dishs = dishService.selectByCategoryId(categoryId);
-//       return Result.success(dishs);
-//    }
+    @ApiOperation("根据id查询菜品")
+    @GetMapping("/{id}")
+    public Result<Dish> selectById(@PathVariable Long id){
+        Dish dish = dishService.selectById(id);
+        return Result.success(dish);
+    }
+
+    @ApiOperation("根据分类id查询菜品")
+    @GetMapping("/list")
+    public Result<List<Dish>> selectByCategoryId(@RequestParam Long categoryId){
+       List <Dish> dishs = dishService.selectByCategoryId(categoryId);
+       return Result.success(dishs);
+    }
+
+    @ApiOperation("修改菜品")
+    @PutMapping()
+    public Result update(@RequestBody DishDTO dishDTO){
+        dishService.update(dishDTO);
+        return Result.success();
+    }
+
+    @ApiOperation("删除菜品")
+    @DeleteMapping()
+    public Result delete(@RequestBody List<Integer> ids){
+        dishService.delete(ids);
+        return Result.success();
+    }
 }
