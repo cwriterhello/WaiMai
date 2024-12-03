@@ -15,6 +15,12 @@ import java.util.Map;
 
 @Mapper
 public interface SetmealMapper {
+    /**
+     * 新增套餐
+     * @param setmeal
+     */
+    @AutoFill(OperationType.INSERT)
+    void insert(Setmeal setmeal);
 
     /**
      * 动态条件查询套餐
