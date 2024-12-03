@@ -1,12 +1,18 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.annotation.AutoFill;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Employee;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import io.swagger.annotations.ApiOperation;
@@ -106,4 +112,16 @@ public class DishServiceImpl implements DishService {
                 .build();
         return dishMapper.list(dish);
     }
+
+    @Override
+    @ApiOperation("套餐分页查询")
+    public PageResult selectByPage(DishPageQueryDTO dishPageQueryDTO) {
+        //PageHelper实现分页查询
+        PageHelper.startPage(dishPageQueryDTO.getPage(),dishPageQueryDTO.getPageSize());
+        List<Dish> empList = dishMapper.selectByPage(dishPageQueryDTO);
+        Page<Dish> page = (Page<Dish>) empList;
+        return new PageResult(page.getTotal(),page.getResult());
+    }
+
+
 }

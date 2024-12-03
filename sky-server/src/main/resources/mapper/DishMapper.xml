@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.DishMapper">
 
-<!--    更新菜品-->
+    <!--    更新菜品-->
     <update id="updateDish">
         update dish
         <set>
@@ -54,4 +54,18 @@
         order by create_time desc
     </select>
 
+    <select id="selectByPage" resultType="Dish">
+        select *from dish
+        <where>
+            <if test="name != null">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

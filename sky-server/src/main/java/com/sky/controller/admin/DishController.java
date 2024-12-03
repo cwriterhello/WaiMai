@@ -1,7 +1,10 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Dish;
+import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,4 +63,11 @@ public class DishController {
         dishService.delete(ids);
         return Result.success();
     }
+    @ApiOperation("菜品分页查询")
+    @GetMapping("/page")
+    public Result<PageResult> selectByPage(DishPageQueryDTO dishPageQueryDTO){
+        PageResult pageResult = dishService.selectByPage(dishPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
 }
