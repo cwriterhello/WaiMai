@@ -78,6 +78,6 @@ public interface SetmealMapper {
      */
     Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 
-    @Update(" update setmeal set category_id = #{categoryId}, name=#{name}, price=#{price}, description=#{description}, image=#{image}, update_time=#{updateTime}, update_user =#{updateUser}")
+
     void update(Setmeal setmeal);
 }
