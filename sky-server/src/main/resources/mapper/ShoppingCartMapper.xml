@@ -20,4 +20,18 @@
             </if>
         </where>
     </select>
+    <update id="updateNumber">
+        update shopping_cart set number=#{number}
+        <where>
+            <if test="dishId != null">
+                and dish_id = #{dishId}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+            <if test="dishFlavor != null">
+                and dish_flavor = #{dishFlavor}
+            </if>
+        </where>
+    </update>
 </mapper>
