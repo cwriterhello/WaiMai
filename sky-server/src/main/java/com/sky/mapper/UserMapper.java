@@ -14,4 +14,6 @@ public interface UserMapper {
     @SelectKey(statement="select by openid", keyProperty="id", before=false, resultType=Long.class)
 
     void add(User user);
+
+    User getById(Long userId);
 }
